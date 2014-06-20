@@ -19,35 +19,36 @@ class Goal < ActiveRecord::Base
       title = Goal.find(goal_id).title
 
       valid_dates.each do |date|
-        p Task.create(date_of_task: date, title: title)
+        Task.create(date: date, title: title)
       end
-
-
     end
 
     def self.find_available_dates(goal_id)
       today = Time.now + days(1)
-      # end_date = Time.now + THIS SHOULD BE TAKEN IN FROM GOAL
-      end_date = Time.now + days(5)
+      end_date = Goal.find(goal_id).end_date
 
       title = Goal.find(goal_id).title
       valid_dates = []
       while(today <= end_date)
         if day_valid?(goal_id, today)
           valid_dates << today
+          # puts "found valid day"
         end
         today += days(1)
+        # puts "today: #{today}, end_date: #{end_date}"
       end
       return  valid_dates
     end
 
+
+
     def self.day_valid?(goal_id, date)
+      # puts "in valid?"
       if date.wday > 0 && date.wday < 6
-        # return Goal.find(goal_id).weekday
+        return Goal.find(goal_id).weekday
       end
 
-        # return Goal.find(goal_id).weekend
-        return true
+        return Goal.find(goal_id).weekend
     end
 
 
