@@ -3,12 +3,6 @@ require_relative '../models/task'
 require_relative '../models/goal'
 require_relative '../views/view'
 
-require 'active_record'
-require 'sqlite3'
-require 'debugger'
-require 'pp'
-require_relative '../views/view'
-
 class Controller
   def self.run
     begin
@@ -17,14 +11,13 @@ class Controller
     View.welcome_message
     View.main_menu
     keep_going = true
+    View.selection_message
     main_menu_input = View.user_input_digit #chagne to string
     #check if input is numeric, if so convert to i else leave
     case main_menu_input
       when 1
         new_goal = add_goal_sub_menu
         View.clear_screen
-        # pp new_goal
-        sleep(5)
         # Goal.create_a_goal(new_goal)
         View.add_success_message
       when 2
@@ -58,12 +51,15 @@ class Controller
       when 'exit'
         View.exit_message
         keep_going = false
+      # when 'Exit'
+      #   View.exit_message
+      #   keep_going = false
       else
         View.invalid_input(1..7)
         sleep(1)
 
     end
-    end while main_menu_input != 7
+    end while keep_going
 
   end
 
