@@ -1,3 +1,10 @@
+
+require_relative '../models/task'
+require_relative '../models/goal'
+require_relative '../views/view'
+
+require 'active_record'
+require 'sqlite3'
 require 'debugger'
 require 'pp'
 require_relative '../views/view'
@@ -5,6 +12,7 @@ require_relative '../views/view'
 class Controller
   def self.run
     begin
+
     View.clear_screen
     View.welcome_message
     View.main_menu
@@ -53,9 +61,10 @@ class Controller
       else
         View.invalid_input(1..7)
         sleep(1)
+
     end
-      # if main_menu_input == 7 or main_menu_input
-    end while keep_going
+    end while main_menu_input != 7
+
   end
 
   def self.add_goal_sub_menu
@@ -63,7 +72,4 @@ class Controller
     new_goal = View.add_goal_screen
     new_goal
   end
-
-
-
 end

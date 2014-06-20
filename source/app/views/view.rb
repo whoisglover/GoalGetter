@@ -1,3 +1,8 @@
+
+require 'active_record'
+require 'sqlite3'
+
+
 class View
   def self.clear_screen
     puts "\e[H\e[2J"
@@ -173,5 +178,4 @@ class View
   def self.is_numeric?(obj)
    obj.to_s.match(/\A[+-]?\d+?(\.\d+)?\Z/) == nil ? false : true
   end
-
 end
