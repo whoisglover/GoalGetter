@@ -21,15 +21,15 @@ class Task < ActiveRecord::Base
 
     todays_tasks = []
 
-    Tasks.all.each do |task|
+    Task.all.each do |task|
       date = task.date
       if (date.day == day && date.year == year && date.month == month)
         todays_tasks << task
       end
 
-      return todays_tasks
-    end
 
+    end
+    return todays_tasks
 
   end
 end

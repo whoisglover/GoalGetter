@@ -1,4 +1,4 @@
-
+require 'debugger'
 class View
   def self.clear_screen
     puts "\e[H\e[2J"
@@ -55,30 +55,32 @@ class View
     begin
       print "Total hours needed to complete #{title}: "
       hours_needed = user_input_digit
-    end while !is_numeric?(hours_needed)
-    new_goal[:hours_needed] = hours_needed
-    begin
-      puts "Avalability: "
-      puts "-Weekdays"
-      puts "-Weekends"
-      puts "-Both"
-      selection_message
-      availability = user_input_string
-    end until availability.downcase == 'weekdays' || availability.downcase == 'weekends' || availability.downcase =='both'
-    case availability.downcase
-      when 'weekdays'
-        new_goal[:weekday] = true
-        new_goal[:weekend] = false
-      when 'weekends'
-        new_goal[:weekday] = false
-        new_goal[:weekend] = true
-      when 'both'
-        new_goal[:weekday] = true
-        new_goal[:weekend] = true
-    end
-    new_goal[:hours_completed]=0
-    new_goal
+      end while !is_numeric?(hours_needed)
+      new_goal[:hours_needed] = hours_needed
+      begin
+        puts "Avalability: "
+        puts "-Weekdays"
+        puts "-Weekends"
+        puts "-Both"
+        selection_message
+        availability = user_input_string
+      end until availability.downcase == 'weekdays' || availability.downcase == 'weekends' || availability.downcase =='both'
+      case availability.downcase
+        when 'weekdays'
+          new_goal[:weekday] = true
+          new_goal[:weekend] = false
+        when 'weekends'
+          new_goal[:weekday] = false
+          new_goal[:weekend] = true
+        when 'both'
+          new_goal[:weekday] = true
+          new_goal[:weekend] = true
+      end
+      new_goal[:hours_completed]=0
+      new_goal
+
   end
+
 
   def self.todays_tasks_screen(tasks)
     begin
@@ -87,20 +89,24 @@ class View
     puts "Tasks to complete today"
     puts "------------------------"
     tasks.each_with_index do |task,index|
-      puts "#{index+1}. Work on #{task} for X hours."
+      puts "#{index+1}. Work on #{task.title} for #{task.hours} hours."
     end
 
       print "Task Completed (or exit): "
       user_input = user_input_string
       if is_numeric?(user_input) and user_input.to_i <= tasks.length
-        tasks_completed << user_input.to_i
+        menu_num = user_input.to_i
+        menu_num = menu_num - 1
+        Task.complete(tasks[menu_num].id)
+        # p menu_num
+        sleep(2)
       elsif user_input == 'exit'
         #donothing
       else
         puts invalid_input(1..tasks.length)
       end
     end while user_input.downcase != 'exit'
-    tasks_completed
+    # tasks_completed
   end
 
 
@@ -112,13 +118,13 @@ class View
       puts "Goals Not Yet Completed"
       puts "------------------------"
       #stretch goal = align these damn tables
-      puts "Goals          Completion Date     Percentage Completed"
+      puts "Goals          Completion Date     Hours Left"
       goals.each_with_index do |goal, index|
         print "#{index+1}. "
-        print goal #.ljust(0)
-        padding = 22-goal.length
-        print dummy_date.rjust(padding)
-        print dummy_percentage.rjust(13)
+        print goal.title #.ljust(0)
+        padding = 22-goal.title.length
+        print (goal.end_date).to_s
+        print (goal.hours_needed - goal.hours_completed)
         puts ""
       end
       print "Type exit to return to main menu: "
@@ -129,17 +135,17 @@ class View
   def self.completed_goals_screen(goals)
     begin
       clear_screen
-      dummy_date = '2012-06-20'
-      dummy_percentage = '100%'
+      # dummy_date = '2012-06-20'
+      # dummy_percentage = '100%'
       puts "YOU DID IT Completed Goals:"
       puts "--------------------------------------------- "
-      puts "Goals          Completion Date    Percentage Completed"
+      puts "Goals          Completion Date    Hours left"
       goals.each_with_index do |goal, index|
         print "#{index+1}."
-        print goal
-        padding = 23-goal.length
-        print dummy_date.rjust(padding)
-        print dummy_percentage.rjust(13)
+        print goal.title
+        padding = 23-goal.title.length
+        print (goal.end_date).to_s
+        print (goal.hours_needed - goal.hours_completed )
         puts ""
       end
       print "Type exit to return to main menu: "
@@ -190,8 +196,10 @@ class View
   end
 
   def self.days(days)
-      return days * 24 * 60 * 60
-    end
+      if is_numeric?(days)
+        return days * 24 * 60 * 60
+      end
+  end
 
   def self.selection_message
     print "Selection: "

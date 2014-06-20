@@ -21,22 +21,23 @@ class Controller
         Goal.make_a_goal(new_goal)
         View.add_success_message
       when 2
-        #todays_tasks =Tasks.where("date = ?", today)
-        todays_dummies = ['hike', 'climb', 'swim']
-        completed = View.todays_tasks_screen(todays_dummies)
+        todays_tasks =Task.todays_tasks
+        # todays_dummies = ['hike', 'climb', 'swim']
+        view_todays = View.todays_tasks_screen(todays_tasks)
         #completed is an array of tasks numbers to be set to complete
         #update tasks
       when 3
          #todays_tasks =Tasks.where("date = ?", today)
-        todays_dummies = ['hike', 'climb', 'swim']
-        completed = View.todays_tasks_screen(todays_dummies)
+        todays_tasks =Task.todays_tasks
+        # todays_dummies = ['hike', 'climb', 'swim']
+        view_todays = View.todays_tasks_screen(todays_tasks)
         #completed is an array of tasks numbers to be set to complete
         #update tasks
       when 4
         #Grab goals that are not complete (array format)
         #Goals.where("completed = ?", false)
-        not_complete_dummies = ['hike', 'climb', 'live']
-        View.outstanding_goals_screen(not_complete_dummies)
+        not_completed = Goal.not_completed_goals
+        View.outstanding_goals_screen(not_completed)
       when 5
         #Grab completed goals (array format)
         completed_dummies = ['123456789012','beer','gin']
@@ -58,7 +59,7 @@ class Controller
         View.invalid_input(1..7)
         sleep(1)
 
-    end
+      end
     end while keep_going
 
   end
@@ -68,4 +69,13 @@ class Controller
     new_goal = View.add_goal_screen
     new_goal
   end
+
+  def self.not_completed_goals
+    goals = []
+    Goal.all.each do |goal|
+      goals << goal if (goal.hours_completed >= goal.hours_needed)
+    end
+    goals
+  end
+
 end

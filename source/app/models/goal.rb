@@ -1,3 +1,4 @@
+require 'debugger'
 require_relative '../../config/application'
 
 class Goal < ActiveRecord::Base
@@ -20,7 +21,7 @@ class Goal < ActiveRecord::Base
       hours = hours_per_task(valid_dates.length, Goal.find(goal_id).hours_needed)
 
       valid_dates.each do |date|
-        p Task.create(date: date, title: title, completed: false, hours: hours, goal_id: goal_id)
+        Task.create(date: date, title: title, completed: false, hours: hours, goal_id: goal_id)
       end
     end
 
@@ -29,7 +30,7 @@ class Goal < ActiveRecord::Base
     end
 
     def self.find_available_dates(goal_id)
-      today = Time.now + days(1)
+      today = Time.now
       end_date = Goal.find(goal_id).end_date
 
       title = Goal.find(goal_id).title
@@ -71,6 +72,13 @@ class Goal < ActiveRecord::Base
         count += 1 if task.completed
       end
     end
+    def self.not_completed_goals
+    goals = []
+    Goal.all.each do |goal|
+      goals << goal if (goal.hours_completed < goal.hours_needed)
+    end
+    goals
+  end
 
 
 end
