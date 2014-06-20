@@ -9,7 +9,8 @@ class CreateGoals < ActiveRecord::Migration
       table.string :complete_goal_by
       table.string :hours_needed
       table.string :hours_completed
-      table.string :availability
+      table.boolean :weekdays
+      table.boolean :weekends
     end
   end
 end
