@@ -3,52 +3,64 @@ require_relative '../models/task'
 require_relative '../models/goal'
 require_relative '../views/view'
 
-require 'active_record'
-require 'sqlite3'
-require 'debugger'
-require 'pp'
-require_relative '../views/view'
-
 class Controller
   def self.run
     begin
-      View.clear_screen
-      View.welcome_message
-      View.main_menu
-      main_menu_input = View.user_input_digit
-      case main_menu_input
+
+    View.clear_screen
+    View.welcome_message
+    View.main_menu
+    keep_going = true
+    View.selection_message
+    main_menu_input = View.user_input_digit #chagne to string
+    #check if input is numeric, if so convert to i else leave
+    case main_menu_input
       when 1
         new_goal = add_goal_sub_menu
-        # pp new_goal
+        View.clear_screen
         # Goal.create_a_goal(new_goal)
         View.add_success_message
       when 2
-        View.clear_screen
-        puts 'valid'
-        sleep(0.5)
+        #todays_tasks =Tasks.where("date = ?", today)
+        todays_dummies = ['hike', 'climb', 'swim']
+        completed = View.todays_tasks_screen(todays_dummies)
+        #completed is an array of tasks numbers to be set to complete
+        #update tasks
       when 3
-        View.clear_screen
-        puts 'valid'
-        sleep(0.5)
+         #todays_tasks =Tasks.where("date = ?", today)
+        todays_dummies = ['hike', 'climb', 'swim']
+        completed = View.todays_tasks_screen(todays_dummies)
+        #completed is an array of tasks numbers to be set to complete
+        #update tasks
       when 4
-        View.clear_screen
-        puts 'valid'
-        sleep(0.5)
+        #Grab goals that are not complete (array format)
+        #Goals.where("completed = ?", false)
+        not_complete_dummies = ['hike', 'climb', 'live']
+        View.outstanding_goals_screen(not_complete_dummies)
       when 5
+        #Grab completed goals (array format)
+        completed_dummies = ['123456789012','beer','gin']
+        View.completed_goals_screen(completed_dummies)
         View.clear_screen
-        puts 'valid'
-        sleep(0.5)
       when 6
-        View.clear_screen
-        puts 'valid'
-        sleep(0.5)
+        View.goal_statistics_screen
       when 7
+        #ascii art of brick
         View.exit_message
+        keep_going = false
+      when 'exit'
+        View.exit_message
+        keep_going = false
+      # when 'Exit'
+      #   View.exit_message
+      #   keep_going = false
       else
         View.invalid_input(1..7)
         sleep(1)
-      end
-    end while main_menu_input != 7
+
+    end
+    end while keep_going
+
   end
 
   def self.add_goal_sub_menu

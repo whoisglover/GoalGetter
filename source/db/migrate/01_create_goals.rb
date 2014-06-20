@@ -10,7 +10,8 @@ class CreateGoals < ActiveRecord::Migration
       table.integer :hours_completed
       table.boolean :weekday
       table.boolean :weekend
-      table.datetime :datetime
+      table.datetime :end_date
+      table.timestamps
     end
   end
 end
