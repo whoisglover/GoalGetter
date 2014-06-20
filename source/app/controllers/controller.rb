@@ -1,5 +1,5 @@
-# require 'debugger'
-# require 'pp'
+require 'debugger'
+require 'pp'
 require_relative '../views/view'
 
 class Controller
@@ -14,19 +14,21 @@ class Controller
     case main_menu_input
       when 1
         new_goal = add_goal_sub_menu
+        View.clear_screen
         # pp new_goal
+        sleep(5)
         # Goal.create_a_goal(new_goal)
         View.add_success_message
       when 2
         #todays_tasks =Tasks.where("date = ?", today)
         todays_dummies = ['hike', 'climb', 'swim']
-        completed = View.todays_tasks_screen(todays_dummies)        
+        completed = View.todays_tasks_screen(todays_dummies)
         #completed is an array of tasks numbers to be set to complete
         #update tasks
       when 3
          #todays_tasks =Tasks.where("date = ?", today)
         todays_dummies = ['hike', 'climb', 'swim']
-        completed = View.todays_tasks_screen(todays_dummies)        
+        completed = View.todays_tasks_screen(todays_dummies)
         #completed is an array of tasks numbers to be set to complete
         #update tasks
       when 4
@@ -40,9 +42,7 @@ class Controller
         View.completed_goals_screen(completed_dummies)
         View.clear_screen
       when 6
-        View.clear_screen
-        puts 'valid'
-        sleep(0.5)
+        View.goal_statistics_screen
       when 7
         #ascii art of brick
         View.exit_message
@@ -54,7 +54,7 @@ class Controller
         View.invalid_input(1..7)
         sleep(1)
     end
-      # if main_menu_input == 7 or main_menu_input  
+      # if main_menu_input == 7 or main_menu_input
     end while keep_going
   end
 

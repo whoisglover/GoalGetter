@@ -71,7 +71,7 @@ class View
     tasks.each_with_index do |task,index|
       puts "#{index+1}. Work on #{task} for X hours."
     end
-    
+
       print "Task Completed (or exit): "
       user_input = user_input_string
       if is_numeric?(user_input) and user_input.to_i <= tasks.length
@@ -81,7 +81,7 @@ class View
       else
         puts invalid_input(1..tasks.length)
       end
-    end while user_input != 'exit'
+    end while user_input.downcase != 'exit'
     tasks_completed
   end
 
@@ -95,7 +95,7 @@ class View
       #stretch goal = align these damn tables
       puts "Goals          Completion Date     Percentage Completed"
       goals.each_with_index do |goal, index|
-        print "#{index+1}. " 
+        print "#{index+1}. "
         print goal #.ljust(0)
         padding = 22-goal.length
         print dummy_date.rjust(padding)
@@ -104,7 +104,7 @@ class View
       end
       print "Type exit to return to main menu: "
       user_input = user_input_string
-    end while user_input !='exit'
+    end while user_input.downcase !='exit'
   end
 
   def self.completed_goals_screen(goals)
@@ -116,8 +116,8 @@ class View
       puts "--------------------------------------------- "
       puts "Goals          Completion Date    Percentage Completed"
       goals.each_with_index do |goal, index|
-        print "#{index+1}." 
-        print goal 
+        print "#{index+1}."
+        print goal
         padding = 23-goal.length
         print dummy_date.rjust(padding)
         print dummy_percentage.rjust(13)
@@ -125,7 +125,23 @@ class View
       end
       print "Type exit to return to main menu: "
       user_input = user_input_string
-    end while user_input !='exit'
+    end while user_input.downcase !='exit'
+  end
+
+  def self.goal_statistics_screen
+    begin
+      View.clear_screen
+      puts "Your Stats Page"
+      puts "-------------------------"
+      puts "Goals Outstanding: 3"
+      puts "Goals Completed: 10"
+      puts "Daily Task Completion Rate: 87%"
+      puts "Goal Completion Rate: 75%"
+      puts "Batting Average: .432"
+      puts "Level: Goal Jedi"
+      print "Type exit to return to main menu: "
+      user_input = user_input_string
+    end while user_input.downcase !='exit'
   end
 
   def self.add_success_message
@@ -143,8 +159,18 @@ class View
     puts "Invalid Choice. Please enter #{input_range}"
     sleep(1.2)
   end
-  
-  def self.is_numeric?(obj) 
+
+  def self.is_a_number?(input)
+    if input.to_i.to_s == input
+      return true
+    elsif input.to_f.to_s == input  #Accept floats
+      return true
+    else
+      return false
+    end
+  end
+
+  def self.is_numeric?(obj)
    obj.to_s.match(/\A[+-]?\d+?(\.\d+)?\Z/) == nil ? false : true
   end
 
