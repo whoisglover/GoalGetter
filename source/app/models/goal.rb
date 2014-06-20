@@ -65,12 +65,14 @@ class Goal < ActiveRecord::Base
 
 
 
-    def num_completed_tasks(tasks)
+    def self.num_completed_tasks(tasks)
       count = 0
       tasks.each do |task|
         count += 1 if task.completed
       end
     end
+
+
 end
 
 
