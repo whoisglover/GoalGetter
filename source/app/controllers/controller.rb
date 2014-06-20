@@ -1,5 +1,5 @@
-require 'debugger'
-require 'pp'
+# require 'debugger'
+# require 'pp'
 require_relative '../views/view'
 
 class Controller
@@ -16,16 +16,22 @@ class Controller
         # Goal.create_a_goal(new_goal)
         View.add_success_message
       when 2
-        View.clear_screen
-        puts 'valid'
-        sleep(0.5)
+        #todays_tasks =Tasks.where("date = ?", today)
+        todays_dummies = ['hike', 'climb', 'swim']
+        completed = View.todays_tasks_screen(todays_dummies)        
+        #completed is an array of tasks numbers to be set to complete
+        #update tasks
       when 3
-        View.clear_screen
-        puts 'valid'
-        sleep(0.5)
+         #todays_tasks =Tasks.where("date = ?", today)
+        todays_dummies = ['hike', 'climb', 'swim']
+        completed = View.todays_tasks_screen(todays_dummies)        
+        #completed is an array of tasks numbers to be set to complete
+        #update tasks
       when 4
-        View.clear_screen
-        puts 'valid'
+        #Grab goals that are not complete (array format)
+        #Goals.where("completed = ?", false)
+        not_complete_dummies = ['hike', 'climb', 'live']
+        View.outstanding_goals_screen(not_complete_dummies)
         sleep(0.5)
       when 5
         View.clear_screen
