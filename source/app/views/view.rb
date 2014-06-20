@@ -1,8 +1,4 @@
 
-require 'active_record'
-require 'sqlite3'
-
-
 class View
   def self.clear_screen
     puts "\e[H\e[2J"
@@ -60,9 +56,25 @@ class View
       hours_needed = user_input_digit
     end while !is_numeric?(hours_needed)
     new_goal[:hours_needed] = hours_needed
-    print "Avalability: "
-    availability = user_input_string
-    new_goal[:availability] = availability
+    begin
+      puts "Avalability: "
+      puts "-Weekdays"
+      puts "-Weekends"
+      puts "-Both"
+      selection_message
+      availability = user_input_string
+    end until availability.downcase == 'weekdays' || availability.downcase == 'weekends' || availability.downcase =='both'
+    case availability.downcase
+      when 'weekdays'
+        new_goal[:weekday] = true
+        new_goal[:weekend] = false
+      when 'weekends'
+        new_goal[:weekday] = false
+        new_goal[:weekend] = true
+      when 'both'
+        new_goal[:weekday] = true
+        new_goal[:weekend] = true
+    end
     new_goal
   end
 
