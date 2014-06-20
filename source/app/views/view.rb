@@ -9,7 +9,6 @@ class View
   end
 
   def self.user_input_digit
-    print "Selection: "
     num = $stdin.gets.chomp
     # debugger
     if num.to_i.to_s == num
@@ -53,7 +52,7 @@ class View
     print "Goal Description: "
     title = user_input_string
     new_goal[:title] = title
-    print "Complete this goal by: "
+    print "Work on this goal for how many days? "
     due_date = user_input_string
     new_goal[:complete_goal_by] = due_date
     begin
@@ -173,6 +172,10 @@ class View
     else
       return false
     end
+  end
+
+  def self.selection_message
+    print "Selection: "
   end
 
   def self.is_numeric?(obj)
