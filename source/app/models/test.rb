@@ -1,8 +1,10 @@
 require_relative 'goal'
 
 
+end_date = Time.now + 6*24*60*60
+
 goal_info = { title: "Juggle",
-  complete_goal_by: Date.today,
+  end_date: end_date,
   hours_needed: 20,
   hours_completed: 0,
   weekday: false,
