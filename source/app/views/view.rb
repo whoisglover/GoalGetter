@@ -4,12 +4,15 @@ class View
   end
 
   def self.user_input_digit
+    print "Selection: "
     num = $stdin.gets.chomp
     # debugger
     if num.to_i.to_s == num
       return num.to_i
     # elsif num.to_f.to_s == num  #Accept floats
       # return num.to_f
+    elsif num =='exit'
+      return num
     else
       puts "Not a whole number. Try again."
       return false
@@ -23,15 +26,17 @@ class View
   def self.welcome_message
     puts "Welcome to Goal Getter"
     puts "-----------------------"
+    puts "What Would You Like to Do?"
+    puts
   end
 
   def self.main_menu
-    puts "1. Add a new Goal"
-    puts "2. View today's tasks"
-    puts "3. Record Goal progress"
-    puts "4. See all outstanding Goals"
-    puts "5. See recently completed goals"
-    puts "6. Goal statistics"
+    puts "1. Add a New Goal"
+    puts "2. View Today's Tasks"
+    puts "3. Record Goal Progress"
+    puts "4. See Outstanding Goals"
+    puts "5. See Completed Goals"
+    puts "6. Goal Statistics"
     puts "7. Exit"
   end
 
@@ -58,6 +63,7 @@ class View
   end
 
   def self.todays_tasks_screen(tasks)
+    begin
     View.clear_screen
     tasks_completed = []
     puts "Tasks to complete today"
@@ -65,11 +71,13 @@ class View
     tasks.each_with_index do |task,index|
       puts "#{index+1}. Work on #{task} for X hours."
     end
-    begin
+    
       print "Task Completed (or exit): "
       user_input = user_input_string
       if is_numeric?(user_input) and user_input.to_i <= tasks.length
         tasks_completed << user_input.to_i
+      elsif user_input == 'exit'
+        #donothing
       else
         puts invalid_input(1..tasks.length)
       end
@@ -93,7 +101,6 @@ class View
         print dummy_date.rjust(padding)
         print dummy_percentage.rjust(13)
         puts ""
-        # print "%-20d" % dummy_date
       end
       print "Type exit to return to main menu: "
       user_input = user_input_string
@@ -134,6 +141,7 @@ class View
   end
   def self.invalid_input(input_range)
     puts "Invalid Choice. Please enter #{input_range}"
+    sleep(1.2)
   end
   
   def self.is_numeric?(obj) 

@@ -8,7 +8,9 @@ class Controller
     View.clear_screen
     View.welcome_message
     View.main_menu
-    main_menu_input = View.user_input_digit
+    keep_going = true
+    main_menu_input = View.user_input_digit #chagne to string
+    #check if input is numeric, if so convert to i else leave
     case main_menu_input
       when 1
         new_goal = add_goal_sub_menu
@@ -44,11 +46,16 @@ class Controller
       when 7
         #ascii art of brick
         View.exit_message
+        keep_going = false
+      when 'exit'
+        View.exit_message
+        keep_going = false
       else
         View.invalid_input(1..7)
         sleep(1)
     end
-    end while main_menu_input != 7
+      # if main_menu_input == 7 or main_menu_input  
+    end while keep_going
   end
 
   def self.add_goal_sub_menu
