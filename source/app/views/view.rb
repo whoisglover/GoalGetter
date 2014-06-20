@@ -1,3 +1,8 @@
+
+require 'active_record'
+require 'sqlite3'
+
+
 class View
   def self.clear_screen
     puts "\e[H\e[2J"
@@ -68,5 +73,4 @@ class View
   def self.invalid_input(input_range)
     puts "Invalid Choice. Please enter #{input_range}"
   end
-
 end
