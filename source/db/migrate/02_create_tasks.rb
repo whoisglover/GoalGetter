@@ -6,7 +6,8 @@ class CreateTasks < ActiveRecord::Migration
   def change
     create_table :tasks do |table|
       table.string :title
-      table.string :date_of_task
+      table.datetime :date
+      table.integer :hours
       table.boolean :completed
       table.references :goal
       table.timestamps

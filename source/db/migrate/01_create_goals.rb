@@ -6,10 +6,11 @@ class CreateGoals < ActiveRecord::Migration
   def change
     create_table :goals do |table|
       table.string :title
-      table.string :complete_goal_by
-      table.string :hours_needed
-      table.string :hours_completed
-      table.string :availability
+      table.integer :hours_needed
+      table.integer :hours_completed
+      table.boolean :weekday
+      table.boolean :weekend
+      table.datetime :datetime
     end
   end
 end
