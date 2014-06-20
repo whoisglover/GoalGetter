@@ -49,8 +49,9 @@ class View
     title = user_input_string
     new_goal[:title] = title
     print "Work on this goal for how many days? "
-    due_date = user_input_string
-    new_goal[:complete_goal_by] = due_date
+    days_to_work = user_input_digit
+    end_date = Time.now + days(days_to_work)
+    new_goal[:end_date] = end_date
     begin
       print "Total hours needed to complete #{title}: "
       hours_needed = user_input_digit
@@ -75,6 +76,7 @@ class View
         new_goal[:weekday] = true
         new_goal[:weekend] = true
     end
+    new_goal[:hours_completed]=0
     new_goal
   end
 
@@ -100,6 +102,7 @@ class View
     end while user_input.downcase != 'exit'
     tasks_completed
   end
+
 
   def self.outstanding_goals_screen(goals)
     begin
@@ -185,6 +188,10 @@ class View
       return false
     end
   end
+
+  def self.days(days)
+      return days * 24 * 60 * 60
+    end
 
   def self.selection_message
     print "Selection: "

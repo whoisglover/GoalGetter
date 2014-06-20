@@ -18,7 +18,7 @@ class Controller
       when 1
         new_goal = add_goal_sub_menu
         View.clear_screen
-        # Goal.create_a_goal(new_goal)
+        Goal.make_a_goal(new_goal)
         View.add_success_message
       when 2
         #todays_tasks =Tasks.where("date = ?", today)
