@@ -32,16 +32,17 @@ class Controller
         #Goals.where("completed = ?", false)
         not_complete_dummies = ['hike', 'climb', 'live']
         View.outstanding_goals_screen(not_complete_dummies)
-        sleep(0.5)
       when 5
+        #Grab completed goals (array format)
+        completed_dummies = ['123456789012','beer','gin']
+        View.completed_goals_screen(completed_dummies)
         View.clear_screen
-        puts 'valid'
-        sleep(0.5)
       when 6
         View.clear_screen
         puts 'valid'
         sleep(0.5)
       when 7
+        #ascii art of brick
         View.exit_message
       else
         View.invalid_input(1..7)

@@ -39,6 +39,7 @@ class View
     new_goal = {}
     puts "Add a Goal"
     puts "------------"
+    #current max title length is 12 characters, adjust screens to allow longer, discuss with team
     print "Goal Description: "
     title = user_input_string
     new_goal[:title] = title
@@ -77,23 +78,47 @@ class View
   end
 
   def self.outstanding_goals_screen(goals)
-    clear_screen
-    dummy_date = '2014-06-20'
-    dummy_percentage = '20%'
-    puts "Goals Not Yet Completed"
-    puts "------------------------"
-    #stretch goal = align these damn tables
-    puts "Goals          Completion Date     Percentage Completed"
-    goals.each_with_index do |goal, index|
-      print "#{index+1}. " 
-      print goal #.ljust(0)
-      padding = 22-goal.length
-      print dummy_date.rjust(padding)
-      print dummy_percentage.rjust(13)
-      puts ""
-      # print "%-20d" % dummy_date
-    end
-    sleep(5)
+    begin
+      clear_screen
+      dummy_date = '2014-06-20'
+      dummy_percentage = '20%'
+      puts "Goals Not Yet Completed"
+      puts "------------------------"
+      #stretch goal = align these damn tables
+      puts "Goals          Completion Date     Percentage Completed"
+      goals.each_with_index do |goal, index|
+        print "#{index+1}. " 
+        print goal #.ljust(0)
+        padding = 22-goal.length
+        print dummy_date.rjust(padding)
+        print dummy_percentage.rjust(13)
+        puts ""
+        # print "%-20d" % dummy_date
+      end
+      print "Type exit to return to main menu: "
+      user_input = user_input_string
+    end while user_input !='exit'
+  end
+
+  def self.completed_goals_screen(goals)
+    begin
+      clear_screen
+      dummy_date = '2012-06-20'
+      dummy_percentage = '100%'
+      puts "YOU DID IT Completed Goals:"
+      puts "--------------------------------------------- "
+      puts "Goals          Completion Date    Percentage Completed"
+      goals.each_with_index do |goal, index|
+        print "#{index+1}." 
+        print goal 
+        padding = 23-goal.length
+        print dummy_date.rjust(padding)
+        print dummy_percentage.rjust(13)
+        puts ""
+      end
+      print "Type exit to return to main menu: "
+      user_input = user_input_string
+    end while user_input !='exit'
   end
 
   def self.add_success_message
@@ -114,9 +139,5 @@ class View
   def self.is_numeric?(obj) 
    obj.to_s.match(/\A[+-]?\d+?(\.\d+)?\Z/) == nil ? false : true
   end
-  
-
-
-
 
 end
