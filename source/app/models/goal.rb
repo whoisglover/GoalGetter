@@ -17,10 +17,15 @@ class Goal < ActiveRecord::Base
       # Weekday or weekend
       valid_dates = find_available_dates(goal_id)
       title = Goal.find(goal_id).title
+      hours = hours_per_task(valid_dates.length, Goal.find(goal_id).hours_needed)
 
       valid_dates.each do |date|
-        Task.create(date: date, title: title)
+        p Task.create(date: date, title: title, completed: false, hours: hours, goal_id: goal_id)
       end
+    end
+
+    def self.hours_per_task(num_tasks, total_hours)
+      return (total_hours / num_tasks) + 1
     end
 
     def self.find_available_dates(goal_id)
@@ -65,7 +70,6 @@ class Goal < ActiveRecord::Base
       tasks.each do |task|
         count += 1 if task.completed
       end
-
     end
 end
 

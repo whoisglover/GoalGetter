@@ -11,6 +11,7 @@ class Task < ActiveRecord::Base
     my_task.save
     my_goal = Goal.find(my_task.goal_id)
     my_goal.hours_completed += my_task.hours
+    my_goal.save
   end
 end
 
