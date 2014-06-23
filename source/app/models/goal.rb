@@ -1,88 +1,114 @@
 require_relative '../../config/application'
 
-class Goal < ActiveRecord::Base
-  has_many :tasks
-    # def self.create_a_goal(goal_info = {})
-
-    # end
-
-    def self.make_a_goal(goal_info = {})
-      new_goal = Goal.create(goal_info)
-      p "added goal with id: #{new_goal.id}"
-      create_tasks_for_goal(new_goal.id)
-    end
-
-    def self.create_tasks_for_goal(goal_id)
-      # How many tasks to create?
-      # Weekday or weekend
-      valid_dates = find_available_dates(goal_id)
-      title = Goal.find(goal_id).title
-      hours = hours_per_task(valid_dates.length, Goal.find(goal_id).hours_needed)
-
-      valid_dates.each do |date|
-        p Task.create(date: date, title: title, completed: false, hours: hours, goal_id: goal_id)
-      end
-    end
-
-    def self.hours_per_task(num_tasks, total_hours)
-      return (total_hours / num_tasks) + 1
-    end
-
-    def self.find_available_dates(goal_id)
-      today = Time.now + days(1)
-      end_date = Goal.find(goal_id).end_date
-
-      title = Goal.find(goal_id).title
-      valid_dates = []
-      while(today <= end_date)
-        if day_valid?(goal_id, today)
-          valid_dates << today
-          # puts "found valid day"
-        end
-        today += days(1)
-        # puts "today: #{today}, end_date: #{end_date}"
-      end
-      return  valid_dates
-    end
-
-
-
-    def self.day_valid?(goal_id, date)
-      # puts "in valid?"
-      if date.wday > 0 && date.wday < 6
-        return Goal.find(goal_id).weekday
-      end
-
-        return Goal.find(goal_id).weekend
-    end
-
-
-
-
-    def self.days(days)
-      return days * 24 * 60 * 60
-    end
-
-
-
-    def num_completed_tasks(tasks)
-      count = 0
-      tasks.each do |task|
-        count += 1 if task.completed
-      end
-    end
+class Fixnum
+  def days
+    self * 86400
+  end
 end
 
+class String
+  def is_integer?
+    self.to_i.to_s == self
+  end
+end
 
+#-------------------------#
+#-------------------------#
 
+class Goal < ActiveRecord::Base
+  has_many :tasks
 
+  def self.add_goal
+    new_goal = {}
 
-# #TEST CODE
+    puts "OK, Let's Add a Goal"
+    10.times do
+      print "- "
+      sleep(0.04)
+    end
+    goal_description(new_goal)
+  end
 
-# goal_info = { title: "Play violin",
-#   complete_goal_by: Date.today,
-#   hours_needed: 20,
-#   hours_completed: 0
-# }
+  #-------------------------#
 
-# Goal.make_a_goal(goal_info)
+  def self.goal_description(new_goal)
+    print "\nGoal Description: "
+    title = gets.chomp
+    new_goal[:title] = title
+    goal_days(new_goal)
+  end
+
+  #-------------------------#
+
+  def self.goal_days(new_goal)
+    print "How many days do you have to work towards this goal? "
+    days_to_work = gets.chomp
+    if days_to_work.to_i == 0
+      invalid_input_goals(days_to_work, new_goal)
+    end
+    days_to_work.is_integer? ? end_date_of_goal(days_to_work, new_goal) : invalid_input_goals(days_to_work, new_goal)
+  end
+
+  #-------------------------#
+
+  def self.end_date_of_goal(days_to_work, new_goal)
+    days_to_work = days_to_work.to_i
+    end_date = Time.now + days_to_work.days
+    new_goal[:end_date] = end_date
+    hours_to_complete(new_goal)
+  end
+
+  #-------------------------#
+
+  def self.invalid_input_goals(days_to_work, new_goal)
+    print "#{days_to_work} is not a valid input. Please enter a number.\n \n"
+    goal_days(new_goal)
+  end
+
+  #-------------------------#
+
+  def self.hours_to_complete(new_goal)
+    print "How many total hours do you expect you'll need to reach your goal? "
+    hours_needed = gets.chomp
+    hours_needed.is_integer? ? new_goal[:hours_needed] = hours_needed : invalid_input_hours(new_goal)
+    View.availability(new_goal)
+  end
+
+  #-------------------------#
+
+  def self.invalid_input_hours(new_goal)
+    puts "Not a valid input. Please try again.\n \n"
+    hours_to_complete(new_goal)
+  end
+
+  #-------------------------#
+
+  def self.check_availability(days_available, new_goal)
+    days_available = days_available.downcase
+    if days_available == 'weekdays' || days_available == 'weekends' || days_available == 'both'
+      vaild_input_availability(days_available, new_goal)
+    else
+      View.invalid_input_availability(new_goal)
+    end
+  end
+
+  #-------------------------#
+
+  def self.vaild_input_availability(days_available, new_goal)
+
+    case days_available
+
+    when 'weekdays'
+      new_goal[:weekday] = true
+      new_goal[:weekend] = false
+    when 'weekends'
+      new_goal[:weekday] = false
+      new_goal[:weekend] = true
+    when 'both'
+      new_goal[:weekday] = true
+      new_goal[:weekend] = true
+    end
+    new_goal[:hours_completed]=0
+    puts new_goal
+  end
+end
