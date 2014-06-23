@@ -11,6 +11,6 @@ class Controller
     View.welcome_message
     View.main_menu
     user_input = View.get_input
-    Input.check_input(user_input) ? Input.valid_input(user_input) : View.invalid_input(user_input)
+    Input.check_input(user_input) ? Input.valid_input(user_input) : Input.invalid_input_menu(user_input)
   end
 end

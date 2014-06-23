@@ -28,25 +28,15 @@ class View
     gets.chomp
   end
 
-  def self.invalid_input(input)
-    puts "#{input} is not a valid selection. Please enter a number 1 through 7."
-    sleep(1.4)
-    Controller.run
-  end
 
   def self.availability(new_goal)
-    puts "When are you available to work on this goal? "
-    puts "-Weekdays"
+    puts "\nWhen are you available to work on this goal? "
+    puts "\n-Weekdays"
     puts "-Weekends"
     puts "-Both"
     puts "\n Please enter your selection: "
     days_available = gets.chomp
     days_available = days_available.downcase
     Goal.check_availability(days_available, new_goal)
-  end
-
-  def self.invalid_input_availability(new_goal)
-    puts "Not a valid input. Please try again."
-    availability(new_goal)
   end
 end
