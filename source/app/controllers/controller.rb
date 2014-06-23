@@ -4,7 +4,6 @@ require_relative '../models/goal'
 require_relative '../models/input'
 require_relative '../views/view'
 
-
 class Controller
   def self.run
     View.clear_screen
