@@ -13,4 +13,8 @@ class Controller
     user_input = View.get_input
     Input.check_input(user_input) ? Input.valid_input(user_input) : Input.invalid_input_menu(user_input)
   end
+  def self.stop
+    puts
+    abort("Goodbye.")
+  end
 end

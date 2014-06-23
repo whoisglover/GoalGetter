@@ -26,6 +26,7 @@ class Goal < ActiveRecord::Base
     puts "\n-HOURS TO COMPLETE: #{add_goal.hours_needed}"
     puts "\n-DEADLINE: #{add_goal.end_date}"
     puts
+    Controller.stop
   end
 
   #-------------------------#
