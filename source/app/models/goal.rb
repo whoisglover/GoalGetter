@@ -95,7 +95,7 @@ class Goal < ActiveRecord::Base
   #-------------------------#
 
   def self.vaild_input_availability(days_available, new_goal)
-
+    days_available = days_available.downcase
     case days_available
 
     when 'weekdays'
